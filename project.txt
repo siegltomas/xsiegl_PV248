@@ -1,0 +1,18 @@
+Projekt za 4 body:
+Implementace hry had (snake)
+--------------------------------------------------------------------------
+Had se pohybuje po dvojrozměrném poli a požírá potravu. 
+Had má na začátku hry délku jedna a jeho délka se při každém požití potravy 
+zvětší o jedna.
+Povinná implementace:
+- grafické uživatelské rozhraní (zobrazení dvojrozměrného pole s hadem)
+- pokud had narazí sám do sebe -> konec hry
+- ovládání klávesnicí (šipkami)
+- zvukový efekt při požití potravy
+- počítání score (čím víc toho sní, tím větší score)
+- různé druhy potravy (liší se barvou a hodnotou score)
+- nějaký systém (třeba náhodný) pro umisťovaní potravy
+
+Možné rozšíření o nepřátelského hada (není povinná implementace):
+- nepřátelský had, který se pohybuje prostorem (dvojrozměrným polem)
+- pokud had narazí do nepřátelského hada -> konec hry
