@@ -42,7 +42,8 @@ def process_eqn(line):
         coef_line = m.group(1)
         coef_line = coef_line.strip()
         tokens = coef_line.split(" ")
-        tokens.insert(0, "+") # operator coef operator coef ...
+        if ("-" not in tokens[0]) and ("+" not in tokens[0]):
+            tokens.insert(0, "+") # operator coef operator coef ...
         sign = None
         coef = None
         for token in tokens:
