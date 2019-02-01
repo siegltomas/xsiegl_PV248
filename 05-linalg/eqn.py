@@ -32,23 +32,19 @@ def process_eqn(line):
     eqn_set = set()
 
     line = line.strip()
-    print("line:" + line) # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     r = re.compile(r"(.*)=(.*)")
     m = r.match(line)
     if m:
         right_string = m.group(2)
         right_string = right_string.strip()
-        print("right_string:" + right_string) # !!!!!!!!!!!!!!!!!!!!!
         const = int(right_string)
 
         coef_line = m.group(1)
         coef_line = coef_line.strip()
-        print("coef_line:" + coef_line) # !!!!!!!!!!!!!!!!!!!!!
         tokens = coef_line.split(" ")
         tokens.insert(0, "+") # operator coef operator coef ...
         sign = None
         coef = None
-        print("tokens:", tokens) # !!!!!!!!!!!!!!!!!!!!!1
         for token in tokens:
             token = token.strip()
             if token == "":
@@ -61,15 +57,12 @@ def process_eqn(line):
                     str_coef = str_coef.strip()
                     if str_coef == "":
                         str_coef = "1"
-                    print("str_coef:", str_coef) # !!!!!!!!!!!!!!!!!!!!!1
                     coef = sign * int(str_coef)
                     var = m.group(2)
                     var = var.strip()
-                    print("var:", var) # !!!!!!!!!!!!!!!!!!!!!1
                     coef_row[ord(var) - ord("a")] = coef
                     aug_row[ord(var) - ord("a")] = coef
                     eqn_set.add(var)
-                    print("eqn_set:", eqn_set) # !!!!!!!!!!!!!!!!!!!!!
                 else:
                     print("This should not happen: re.compile - token")
                 sign = None
@@ -102,46 +95,29 @@ def matrix_to_square_matrix(matrix, var_set):
 
 def main():
     (coef_matrix, aug_matrix, right_side, var_set) = read_input()
-    print("coef_matrix:", coef_matrix) # !!!!!!!!!!!!!!!!!!!!!
-    print("aug_matrix:", aug_matrix) # !!!!!!!!!!!!!!!!!!!!!
-    print("right_side:", right_side) # !!!!!!!!!!!!!!!!!!!!!
-    print("var_set:", var_set) # !!!!!!!!!!!!!!!!!!!!!
 
     coef_matrix = matrix_to_square_matrix(coef_matrix, var_set)
     aug_matrix = matrix_to_square_matrix(aug_matrix, var_set)
-    print("square coef_matrix:", coef_matrix) # !!!!!!!!!!!!!!!!!!!!!
-    print("square aug_matrix:", aug_matrix) # !!!!!!!!!!!!!!!!!!!!!
 
     coef_rank = linalg.matrix_rank(coef_matrix)
     aug_rank = linalg.matrix_rank(aug_matrix)
     var_count = len(var_set)
 
-    print("coef_rank:", coef_rank) # !!!!!!!!!!!!!!!!!!!!!
-    print("aug_rank:", aug_rank) # !!!!!!!!!!!!!!!!!!!!!
-    print("var_count:", var_count) # !!!!!!!!!!!!!!!!!!!!!
-
     if coef_rank != aug_rank:
         print("no solution")
     elif coef_rank == var_count:
         result = list(linalg.solve(coef_matrix, right_side))
+        res_output = "solution: "
         for c in lowercase_letters:
             if c in var_set:
-                print(
-
-
+                res_output += str(c) + " = " + str(result[0]) + ", "
+                del result[0]
+        print(res_output[:-2])
     else:
         print("solution space dimension: " + str(var_count - coef_rank))
 
-'''
-        var_result = []
-        for i, var in enumerate(all_variables_ordered.items()):
-            var_result.append(var[0] + ' = ' + str(x[i]))
-
-        print('solution: ' + ', '.join(var_result))
-'''
-
-
-# start
+#####################################################################
+# start #
 main()
 
 #####################################################################
