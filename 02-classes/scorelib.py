@@ -3,16 +3,50 @@
 import re
 
 class Print:
-    def __init__(self, edition, print_id, partiture)
+    def __init__(self, edition, print_id, partiture):
         self.edition = edition
         self.print_id = print_id
         self.partiture = partiture
 
+    def format(self):
+        print("Print Number:", self.print_id)
+        self.composition().format()
+        self.edition.format()
+        if self.partiture:
+            print("Partiture: " + "yes")
+        else:
+            print("Partiture: " + "no")
+        if self.composition().incipit == None:
+            print("Incipit:")
+        else:
+            print("Incipit: " + self.composition().incipit)
+
+    def composition(self):
+        return self.edition.composition
+
 class Edition:
-    def __init__(self, composition, authors, name)
+    def __init__(self, composition, authors, name):
         self.composition = composition
         self.authors = authors
         self.name = name
+
+    def format(self):
+        if self.name:
+            print("Edition: " + self.name)
+        else:
+            print("Edition:")
+
+        print("Editor: ", end="")
+        sep = ""
+        for author in self.authors:
+            print(sep + author.format(), end="")
+            sep = ", "
+        print()
+
+        for i in range(len(self.composition.voices)):
+            print("Voice {}: {}{}".format(i + 1, 
+                  self.composition.voices[i].range + ', ' if self.composition.voices[i].range is not None else "", 
+                  self.composition.voices[i].name if self.composition.voices[i].name is not None else ""))
 
 class Composition:
     def __init__(self, name, incipit, key, genre, year, voices, authors):
@@ -24,11 +58,48 @@ class Composition:
         self.voices = voices
         self.authors = authors
 
+    def format(self):
+        print("Composer: ", end="")
+        sep = ""
+        for author in self.authors:
+            print(sep + author.format(), end="")
+            sep = "; "
+        print()
+
+        if self.name:
+            print("Title: " + self.name)
+        else:
+            print("Title:")
+        if self.genre:
+            print("Genre: " + self.genre)
+        else:
+            print("Genre:")
+        if self.key:
+            print("Key: " + self.key)
+        else:
+            print("Key:")
+        if self.year:
+            print("Composition Year: " + str(self.year))
+        else:
+            print("Composition Year:")
+
 class Person:
     def __init__(self, name, born, died):
         self.name = name
         self.born = born
         self.died = died
+
+    def format(self):
+        s = self.name
+        if self.born:
+            years = str(self.born) + "--"
+        else:
+            years = "--"
+        if self.died:
+            years += str(self.died)
+        if years != "--":
+            s += " (" + years + ")"
+        return s
 
 class Voice:
     def __init__(self, name, range):
@@ -75,10 +146,10 @@ def create_person(str_name):
     str_name = str_name.strip()
     return Person(str_name, None, None)
 
-def string_or_none(str)
-    result = str.strip()
-        if len(result) == 0:
-            result = None
+def string_or_none(s):
+    result = s.strip()
+    if len(result) == 0:
+        result = None
     return result
 
 def create_composition(current_print):
@@ -139,6 +210,7 @@ def create_composition(current_print):
                     else:
                         voices.append(Voice(None, voice_range))
                 elif len(s) > 0: # not range
+                    voice_name = s
                     voices.append(Voice(voice_name, None))
                 else:
                     voices.append(Voice(None, None))
@@ -205,5 +277,5 @@ def load(file_name):
     if len(current_print) != 0: # create last Print
         print_list.append(create_print(current_print))
 
-    file.close();
+    file.close()
     return print_list
