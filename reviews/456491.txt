@@ -1,0 +1,41 @@
+Review od: Jakub Poláček 456491 *0.5
+
+Velice přínosná review. Dozvěděl jsem se o funkci main, která napomůže větší přehlednosti a
+odbourá globální proměnné. Dozvěděl jsem se řadu zajímavých tipů ohledně regulárních výrazů, 
+jak velice jednoduše na jednom řádků napsat reverse (obrácení) řetězce a mnoho dalších postřehů.
+Určitě si zaslouží plný počet bodů.
+
+/*****************/
+/**** Uloha 1 ****/
+/*****************/
+
+stat.py
+
+- Zakomentovaná celá funkcia je dosť wtf. Načo tam potom je keď nemá žiaden efekt ? Takéto zbytočnosti nakonci mazať, zbytočne všetko zneprehľadňujú. Ale nie je to extrémny problém.
+- Premenná s názvom "c" je blbosť. Áno, daný kód je dostatočne krátky aby to nebolo neprehľadné, ale do budúcna to môže spôsobovať hrozné problémy, a i teraz to spomaľuje pochopenie / čítateľnosť kódu, hoci len o niekoľko sekúnd.
+- V regexoch namiesto dávania automatchujúceho groupu a potom výrazu, ktorý hľadáš, môžeš použiť len daný regex a následne použiť search funkciu namiesto match. Efekt je rovnaký a je to prehľadnejšie, plus sa vyhneš potencionálnym problémom s hladnými algoritmami ktoré môžu regexy mať. Toto urćite stojí za zváženie.
+- Globálna premenná file je strašná. A navyše ju definuješ potom, ako definuješ funkcie. Je to hrozne neprehľadné, kazí to dekompozíciu do funkcií, a celkovo to pôsobí hrozne zle. Buďto ju predávať ako premennú, alebo ideálnejšie celé načítať a následne posúvať len dáta (čo je pri takto malých súboroch plne korektné).
+- Neprítomnosť nejakej main funkcie - main funkcia pomáha prehľadnosti a funkčnej dekompozícii. Chápem že tentokrát ide len o jednoduchý skript, no pomáha to a je to best practice.
+
+/*****************/
+/**** Uloha 2 ****/
+/*****************/
+
+scorelib.py
++ rozumná dekompozícia do classov. Vypadá to fajn, za mňa ok. Dokonca používaš pre každú classu jej vlastý format, čo je super a páči sa mi to.
+- namiesto format si možno mohol použiť na miestach okrem vyžadovaného pythonovejskejšiu funkciu __str__(), čo by malo za efekt, že print(ClassObjekt) by sa automaticky vypisoval tak ako chceš bez nutnosti volať funciu format. Ale to je len detail, ktorý by to spravil ešte trochu krajším.
+- Opäť, hrozne zlé je používanie jednopísmenových premenných, a ešte tento problém znásobuješ tým, že ich recykluješ na rôzne účely. Oveľa lepšie než mať 50 regexov postupne v premennej menom "r" je si na začiatku pre každý regex definovať konštantu, a následne použiť tú. Je to tak tisíckrát prehľadnejšie.
+- Navyše, keď už používaš regex, tak sa môžeš vyhnúť veciam ako "if "incipit" in line", proste spravíš regex aj s tým incipitom a groupneš to čo z neho potrebuješ vytiahnuť, a ten sa buď matchne, alebo nie. Takto si zbytočne komplikuješ život aj čítateľnosť kódu. Zbytočne potom musíš replacovať časti textu a tak ďalej.
+
+test.py
+- Nie je čo komentovať. Vypadá funkčne.
+	
+
+/*****************/
+/**** Uloha 5 ****/
+/*****************/
+
++ main funkcia, super, fixuje nedostatok z prvej úlohy. Ten masívny "start" komentár je trochu redundantný, ale stále lepšie ako keby main funkcia nebola. Nice.
+- reverse stringu sa dá spraviť oveľa jednoduchšie takto "mystring[::-1]". Nie som si istý ako to funguje v pythone, no tvoj prístup by napríklad v jave pre string dlhý 255 znakov vytvoril 255 objektov. Asi chápeš, prečo to nie je úplne ideálne. 
++ Ale je fajn že si definuješ pomocné funkcie.
++ Regex vypadá podstatne lepšie, keby si sa s tým trochu viac vyhral, stačil by ti pre každý riadok fakt iba jeden regex, ale to až tak nevadí. 
