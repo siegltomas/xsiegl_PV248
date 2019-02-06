@@ -1,0 +1,49 @@
+Review od 475939 *0.5
+
+Velice přínosná review. Dozvěděl jsem se mimo jiné, jak porovnávat hodnotu None a že mám používat 
+if __name__ == '__main__', dosud jsem o ní nevěděl. Uvědomil jsem si, že bych měl lépe pojmenovávat proměnné.
+Z tuto review si určitě zaslouží plný počet bodů.
+-------------------------------------------------------------------------------
+
+Úkol 01:
+
+stat.py
+- kód je písaný jednoducho, prehľadne a je dobre čitateľný
+- páči sa mi delenie kódu na menšie celky
+- zakomentovaný kód určite do odovzdanej úlohy nepatrí
+- jednoznakové názvy premenných sa mi osobne nepáčia aj keď v tomto prípade to až tak nevadí
+- na niektorých miestach máš zbytočné else po if ... return
+- operácie so súbormi je lepšie zabaliť do bloku try-except-finally alebo použiť with
+- kód, ktorý sa vykonáva po spustení scriptu je vhodnejšie zabaliť do if __name__ == '__main__'
+
+Úkol 02:
+
+test.py
+- páči sa mi príklad správneho použitia ak je počet argumentov programu menší ako očakávaný
+
+scorelib.py
+- opäť je kód zrozumiteľne písaný a ľahko sa číta
+- nepáči sa mi pomenovanie regulárnych výrazov, hodilo by sa buď použiť popisnejší názov alebo potom dať do komentu popis, čo daný regulárny výraz robí
+- na niektorých miestach by sa hodilo oddeliť kód prázdnym riadkom, napríklad pred dlhým for cyklom alebo pred elif v dlhom bloku if elif elif ... else, podľa mňa by to zlepšilo celkovú prehľadnosť kódu
+- niekde používaš ščítanie reťazcov a inde zase string format, najlepšie je používať jednu vec aby to bolo konzistentné
+- dva riadky kódu máš príliš dlhé, odporúčaná dĺžka je 80 (79 podľa PEP-8) znakov
+- pozor na výstupné formátovanie, nie všade zodpovedá špecifikácii zadania
+- porovnávanie s None by malo byť pomocou is None a nie == None
+- ak chceš zistiť či je reťazec prázdny nepoužívaj if len(string) == 0 ale if not string
+- opäť rovnaká pripomienka s prácou so súbormi ako v prvej úlohe
+- rovnako platí aj pripomienka s main 
+
+Úkol 06:
+
+peaks.py
+- kôd je dobre čitateľný a prehľadný
+- názvy niektorých premenných sú nič nehovoriace napríklad s_data, d0 a d1
+- platia rovnaké pripomienky ako pri predchádzajúcich úlohách - súbory, názvy premenných, None, prázdny reťazec, main a podobne
+
+Celkovo:
+- páči sa mi delenie kódu na funkcie, kód je celkovo prehľadný a zrozumiteľný
+- pri práci so súbormi je dobré používať with
+- je vhodné používať if __name__ == '__main__'
+
+
+ 
