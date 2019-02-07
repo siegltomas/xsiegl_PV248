@@ -195,16 +195,17 @@ def create_composition(current_print):
             if m:
                 s = m.group(1)
                 s = s.strip()
-                r_range = re.compile(r"(w*)--(w*)(.*)")
+                r_range = re.compile(r"(\w*)--(\w*)")
                 m_range = r_range.match(s)
                 if m_range:
                     voice_range = m_range.group(1) + "--" + m_range.group(2)
-                    voice_name = m_range.group(3)
+                    voice_name = s.replace(voice_range, "")
                     voice_name = voice_name.strip()
                     if len(voice_name) > 0 and voice_name[0] == ",":
                         voice_name = voice_name[1:]
                     if len(voice_name) > 0 and voice_name[0] == " ":
                         voice_name = voice_name[1:]
+                    voice_name = voice_name.strip()
                     if len(voice_name) > 0:
                         voices.append(Voice(voice_name, voice_range))
                     else:
