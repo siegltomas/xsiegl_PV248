@@ -47,10 +47,10 @@ class ServerHandler(BaseHTTPRequestHandler):
         self.send_header("Content-Type", "application/json")
         self.end_headers()
         json_dict = {"id": count}
-        count += 1
         json_string = str(json.dumps(json_dict))
         json_string = bytes(json_string, ENCODING)
         self.wfile.write(json_string)
+        count += 1
 
     def status(self, event_parameters):
         global count
@@ -107,7 +107,12 @@ class ServerHandler(BaseHTTPRequestHandler):
                 json_dict["message"] = "game is over"
             else:
                 our_game["board"][y][x] = player
-                our_game["next"] = 2 if player == 1 else 1
+
+                if player == 1:
+                    our_game["next"] = 2
+                else:
+                    our_game["next"] = 1
+
                 our_game["winner"] = self.winner(our_game["board"])
                 json_dict["status"] = "ok"
 
@@ -123,30 +128,31 @@ class ServerHandler(BaseHTTPRequestHandler):
             self.send_error(400, "numeric parameters expected")
 
     def list(self):
-        global game_dict
-        arr = []
-        for k, v in game_dict.items():
-            arr.append({'id': k, 'name': v['name']})
+        global game
+
+        my_list = []
+        for key, value in game.items():
+            my_list.append({"id": key, "name": value["name"]})
         self.send_response(200)
         self.send_header('Content-Type', 'application/json')
         self.end_headers()
-        json_string = str(json.dumps(arr))
-        json_string = bytes(json_string, 'utf-8')
+        json_string = str(json.dumps(my_list))
+        json_string = bytes(json_string, ENCODING)
         self.wfile.write(json_string)
 
-    def winner(self, board):
-        if 0 not in board[0] and 0 not in board[1] and 0 not in board[2]:
-            return 0
-        for p in [1, 2]:
-            # diagonaly
-            if (board[0][0] == p and board[1][1] == p and board[2][2] == p) or \
-                    (board[0][2] == p and board[1][1] == p and board[2][0] == p):
-                return p
-            for i in range(3):
-                # riadky a stlpce
-                if (board[i][0] == p and board[i][1] == p and board[i][2] == p) or \
-                        (board[0][i] == p and board[1][i] == p and board[2][i] == p):
-                    return p
+    def winner(self, playing_board):
+        if 0 not in playing_board[0] and 0 not in playing_board[1] and 0 not in playing_board[2]:
+            return 0 # draw
+        for player in [1, 2]:
+            # diagonals
+            if (playing_board[0][0] == player and playing_board[1][1] == player and playing_board[2][2] == player) or \
+                    (playing_board[0][2] == player and playing_board[1][1] == player and playing_board[2][0] == player):
+                return player
+            for rc in range(3):
+                # rows and cols
+                if (playing_board[rc][0] == player and playing_board[rc][1] == player and playing_board[rc][2] == player) or \
+                        (playing_board[0][rc] == player and playing_board[1][rc] == player and playing_board[2][rc] == player):
+                    return player
         return None
 
 
